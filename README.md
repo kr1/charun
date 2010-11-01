@@ -40,7 +40,7 @@ run charun as a daemon with:
 
 it will log to the tmp directory and will write its pid to a file called twistd.pid to the current directory.  
 stop the application with:  
-<code>kill `cat twistd.pid`</code>
+<code>kill \`cat twistd.pid\`</code>
 
 you can run the application in foreground with:  
 <code>twistd -noy charun_tac.py</code>
