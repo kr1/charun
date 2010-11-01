@@ -35,13 +35,13 @@ furthermore, you need a [couchdb](http://couchdb.apache.org/) instance to write 
 
 2.  **Run**
 
-run charun as a daemon with:
-twistd -y charun_tac.py
+run charun as a daemon with:  
+<code>twistd -y charun_tac.py</code>
 
-it will log to the tmp directory and will write its pid to a file called twistd.pid to the current directory.
-stop the application with:
-kill `cat twistd.pid`
+it will log to the tmp directory and will write its pid to a file called twistd.pid to the current directory.  
+stop the application with:  
+<code>kill `cat twistd.pid`</code>
 
-you can run the application in foreground with:
-twistd -noy charun_tac.py
+you can run the application in foreground with:  
+<code>twistd -noy charun_tac.py</code>
 
