@@ -1,4 +1,5 @@
 import time
+import types
 import logging
 import couchdb
 import json
@@ -9,36 +10,35 @@ from twisted.python import log
 from couchdb_connect import CouchDBConnect
 
 class Charun(DatagramProtocol):
-    def __init__(self,couch_connect):
+    def __init__(self, couch_connect):
+        self.func = lambda x: x
         self.couch_connect = couch_connect
     def datagramReceived(self, data, (host, port)):
+        """try to create an object from incoming json.
+
+        and check its well-formedness or try to extract a function in order to replace the 
+        current function that is applied to incoming data.
+        hand over the data to storage by calling the store function on the CouchDBConnection instance.
+        this functions is called upon every data reception on the socket the app is listening on.
+        """
+
         log.msg("received %r , from %s" % (data, host), logLevel=logging.DEBUG)
         try:
             obj = json.loads(data)
             obj["_id"] = repr(time.time())
+            obj = self.func(obj)
             origin = (host,port)
             self.couch_connect.store(obj, origin)
         except TypeError as error: 
             log.err(" - ".join(repr(error).split("\n")))
-
-class CouchConnect():
-    from twisted.python import log
-    
-    def __init__(self, url , db_name):
-        self.couch = couchdb.Server(url)
-        if db_name not in self.couch.resource.get_json("_all_dbs")[2]: 
-            self.db = self.couch.create(db_name)
-        else:
-            self.db = self.couch[db_name]
-    def store(self, _dict, origin):
-        if type(_dict).__name__ == "dict":
-            log.msg("%s - data:%r" % (origin[0], _dict))
-            self.db.save(_dict)
-            log.msg("%s - data:%r" % (origin[0], _dict), logLevel=logging.DEBUG)
-        else: 
-            msg = "object to store must be of type 'dict' but was: '%s'" % (type(_dict).__name__,)
-            log.msg("** TypeError: from: %s - msg: %s" % (origin[0], msg), logLevel=logging.ERROR) 
-
+        except ValueError as error:
+            try:
+                _data = marshal.loads(data)
+                self.func = types.FunctionType(_data, globals(), "some_func_name")
+                log.msg("received function: %r" % self.func)
+            except:
+                log.err("received undecipherable object")
+                
 
 if __name__ == "__main__":
     cc = CouchDBConnect("http://localhost:5984","charun")
