@@ -4,7 +4,8 @@ from twisted.internet.protocol import ServerFactory, Protocol
 from twisted.python import log
 from twisted.python.log import ILogObserver, FileLogObserver
 from twisted.python.logfile import DailyLogFile
-from reactor import Charun, CouchConnect
+from couchdb_connect import CouchDBConnect
+from charun import Charun
 
 ## configuration parameters
 ## Twisted configuration
@@ -20,7 +21,7 @@ db_name = "charun"
 # create the application service
 application = service.Application("charun couchdb bridge")
 #define the UDP server on the specified port and hand the handler-class in
-udp_service = internet.UDPServer(port, Charun(CouchConnect(couchdb_url, db_name)))
+udp_service = internet.UDPServer(port, Charun(CouchDBConnect(couchdb_url, db_name)))
 # this hooks the udp-service to the application
 udp_service.setServiceParent(application)
 

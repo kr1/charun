@@ -6,6 +6,7 @@ from twisted.application import internet, service
 from twisted.internet.protocol import  DatagramProtocol
 from twisted.internet import reactor
 from twisted.python import log
+from couchdb_connect import CouchDBConnect
 
 class Charun(DatagramProtocol):
     def __init__(self,couch_connect):
@@ -40,7 +41,7 @@ class CouchConnect():
 
 
 if __name__ == "__main__":
-    cc = CouchConnect("http://localhost:5984","charun")
+    cc = CouchDBConnect("http://localhost:5984","charun")
     reactor.listenUDP(9999, Charun(cc))
     reactor.run()
 
