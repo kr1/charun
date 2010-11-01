@@ -26,7 +26,7 @@ udp_service = internet.UDPServer(port, Charun(CouchDBConnect(couchdb_url, db_nam
 udp_service.setServiceParent(application)
 
 #LOGGING
-logfile = DailyLogFile("charun.log", "tmp/log")
+logfile = DailyLogFile("charun.log", "tmp")
 logname = "charun" 
 logging.basicConfig(stream=logfile, format="[%(asctime)s]:charun: %(levelname)s:%(message)s", datefmt="%Y-%m-%d %H:%M:%S")
 logger = logging.getLogger(logname)
