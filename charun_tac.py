@@ -39,4 +39,9 @@ logger = logging.getLogger(logname)
 logger.setLevel(loglevel) 
 application.setComponent(ILogObserver, log.PythonLoggingObserver(logname).emit)
 
-# when started with twistd it will start the child services.
+def test_initial(x):
+    """this function serves testing purposes"""
+    for it in x.items():
+      x[it[0]] = it[1]*2
+    return x
+

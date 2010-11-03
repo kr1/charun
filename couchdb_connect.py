@@ -11,12 +11,13 @@ class CouchDBConnect():
         else:
             self.db = self.couch[db_name]
     def store(self, _dict, origin):
+        res = None
         if type(_dict).__name__ == "dict":
             log.msg("%s - data:%r" % (origin[0], _dict))
-            self.db.save(_dict)
+            res = self.db.save(_dict)
             log.msg("%s - data:%r" % (origin[0], _dict), logLevel=logging.DEBUG)
         else: 
             msg = "object to store must be of type 'dict' but was: '%s'" % (type(_dict).__name__,)
             log.msg("** TypeError: from: %s - msg: %s" % (origin[0], msg), logLevel=logging.ERROR) 
-
+        return res
 
