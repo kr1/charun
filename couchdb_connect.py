@@ -4,7 +4,7 @@ import couchdb
 from twisted.python import log
 
 class CouchDBConnect():
-    def __init__(self, url , db_name):
+    def __init__(self, url="http://localhost:5984" , db_name="charun"):
         self.couch = couchdb.Server(url)
         if db_name not in self.couch.resource.get_json("_all_dbs")[2]: 
             self.db = self.couch.create(db_name)
