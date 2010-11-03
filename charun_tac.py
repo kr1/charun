@@ -14,14 +14,19 @@ host = 'localhost'
 loglevel = logging.INFO
 #loglevel = logging.DEBUG
 
+# this is the initial forwarding function used in the UDP Server. It is applied to incoming dicts
+initial = lambda x: x
+
 ## CouchDB configuration
 couchdb_url = "http://localhost:5984"
 db_name = "charun"
+# Test DB
+test_db_name = "test_charun"
 
 # create the application service
 application = service.Application("charun couchdb bridge")
 #define the UDP server on the specified port and hand the handler-class in
-udp_service = internet.UDPServer(port, Charun(CouchDBConnect(couchdb_url, db_name)))
+udp_service = internet.UDPServer(port, Charun(CouchDBConnect(couchdb_url, db_name),initial))
 # this hooks the udp-service to the application
 udp_service.setServiceParent(application)
 

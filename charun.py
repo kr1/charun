@@ -18,8 +18,8 @@ from twisted.python import log
 from couchdb_connect import CouchDBConnect
 
 class Charun(DatagramProtocol):
-    def __init__(self, couch_connect):
-        self.func = lambda x: x
+    def __init__(self, couch_connect, func):
+        self.func = func
         self.couch_connect = couch_connect
     def datagramReceived(self, data, (host, port)):
         """try to create an object from incoming json.
@@ -46,11 +46,11 @@ class Charun(DatagramProtocol):
                 log.msg("received function: %r" % self.func)
             except:
                 log.err("received undecipherable object")
-                
+        return res    
 
 if __name__ == "__main__":
     cc = CouchDBConnect("http://localhost:5984","charun")
-    reactor.listenUDP(9999, Charun(cc))
+    reactor.listenUDP(9999, Charun(cc, lambda x: x))
     reactor.run()
 
 
