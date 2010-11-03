@@ -31,12 +31,13 @@ class Charun(DatagramProtocol):
         """
 
         log.msg("received %r , from %s" % (data, host), logLevel=logging.DEBUG)
+        res = None
         try:
             obj = json.loads(data)
             obj["_id"] = repr(time.time())
             obj = self.func(obj)
             origin = (host,port)
-            self.couch_connect.store(obj, origin)
+            res = self.couch_connect.store(obj, origin)
         except TypeError as error: 
             log.err(" - ".join(repr(error).split("\n")))
         except ValueError as error:

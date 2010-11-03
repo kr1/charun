@@ -29,6 +29,7 @@ application = service.Application("charun couchdb bridge")
 udp_service = internet.UDPServer(port, Charun(CouchDBConnect(couchdb_url, db_name),initial))
 # this hooks the udp-service to the application
 udp_service.setServiceParent(application)
+# when started with twistd it will start the child services.
 
 #LOGGING
 logfile = DailyLogFile("charun.log", "tmp")
