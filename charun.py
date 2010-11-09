@@ -20,6 +20,7 @@ from couchdb_connect import CouchDBConnect
 class Charun(DatagramProtocol):
     def __init__(self, couch_connect, func):
         self.func = func
+        self.log = log
         self.couch_connect = couch_connect
     def datagramReceived(self, data, (host, port)):
         """try to create an object from incoming json.
@@ -30,7 +31,7 @@ class Charun(DatagramProtocol):
         this functions is called upon every data reception on the socket the app is listening on.
         """
 
-        log.msg("received %r , from %s" % (data, host), logLevel=logging.DEBUG)
+        self.log.msg("received %r , from %s" % (data, host), logLevel=logging.DEBUG)
         res = None
         try:
             obj = json.loads(data)
@@ -39,14 +40,14 @@ class Charun(DatagramProtocol):
             origin = (host,port)
             res = self.couch_connect.store(obj, origin)
         except TypeError as error: 
-            log.err(" - ".join(repr(error).split("\n")))
+            self.log.err(" - ".join(repr(error).split("\n")))
         except ValueError as error:
             try:
                 _data = marshal.loads(data)
                 self.func = types.FunctionType(_data, globals(), "some_func_name")
-                log.msg("received function: %r" % self.func)
+                self.log.msg("received function: %r" % self.func)
             except:
-                log.err("received undecipherable object")
+                self.log.err("received undecipherable object")
         return res    
 
 if __name__ == "__main__":
