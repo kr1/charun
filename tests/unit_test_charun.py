@@ -1,56 +1,58 @@
+"""unit tests for the charun module
+
+as the Charun class is a subclass of twisted.internet.protocol.DatagramProtocol
+only the <datagramReceived> method is tested
+"""
 import unittest
 import marshal
 import time
 import json
 import client
+from mock import Mock
 from charun import Charun
 from couchdb_connect import CouchDBConnect
 import charun_tac
+
 class testCharun(unittest.TestCase):
     """a test class for the Charun module"""
     def setUp(self):
         """
-        set up data used in the tests.
+        set up data used and mock objects/methods in the tests.
 
         this method is called before each test function execution.
         """
-        self.cc = CouchDBConnect(charun_tac.couchdb_url, charun_tac.test_db_name)
-        self.charun = Charun(self.cc, charun_tac.initial)
+        cc = Mock()
+        charun_tac.initial = Mock()
+        charun_tac.initial.return_value == "transformed obj"
+        self.charun = Charun(cc, charun_tac.initial)
+        self.charun.log = Mock()
+
+    def test_10_receive_data(self):
+        """test data reception: json-dict-object gets written"""
+        self.charun.datagramReceived('{"122":"erre"}', ("localhost", 30000))
+        self.assertTrue(self.charun.log.msg.called)
+        self.assertTrue(self.charun.couch_connect.store.called, "storage function should have been called, but was not")
 
     def test_20_receive_data(self):
-        """test data reception: json-dict-object gets written, other json strings not"""
-        # this data has to be written to the db
-        bef = self.cc.db.info()["doc_count"]
-        self.charun.datagramReceived('{"122":"erre"}', ("localhost", 30000))
-        after = self.cc.db.info()["doc_count"]
-        self.assertNotEqual(bef,after) 
-        # this data must not be written to the db (not castable to dict-type)
-        bef = self.cc.db.info()["doc_count"]
+        """test data reception: json-non-dict-object does not get written"""
         self.charun.datagramReceived('122', ("localhost", 30000))
-        after = self.cc.db.info()["doc_count"]
-        self.assertEqual(bef,after) 
+        self.assertTrue(self.charun.log.err.called)
+        self.assertTrue(self.charun.log.msg.called)
+        self.assertFalse(self.charun.couch_connect.store.called, "storage function has been erroneously called")
+        #print self.charun.log.err.assert_called_with()
 
-    def test_30_receive_function(self):
-        """test function reception: a serialized function string gets integrated and applied.
-        
-        nothing is written to the DB and
-        finally a modified functionality is observed.
-        """
-        bef = self.cc.db.info()["doc_count"]
-        self.charun.datagramReceived(marshal.dumps(charun_tac.test_initial.func_code) , ("localhost", 30000))
-        after = self.cc.db.info()["doc_count"]
-        self.assertEqual(bef,after) 
-        #time.sleep(1)
-        id,ref = self.charun.datagramReceived('{"122":"erre"}', ("localhost", 30000))
-        doc = self.cc.db.get(id)
-        self.assertEqual(doc['122'],'erreerre')
+    def test_30_receive_data(self):
+        """test data reception: non json object gets written"""
+        self.charun.datagramReceived(122, ("localhost", 30000))
+        self.assertTrue(self.charun.log.msg.called)
+        self.assertFalse(self.charun.couch_connect.store.called, "storage function has been erroneously called")
 
-    def test_10_write_data_to_the_db(self):
-        """test successful writing to the db by comparing the doc-count before and after"""
-        bef = self.cc.db.info()["doc_count"]
-        self.charun.datagramReceived('{"122":"erre"}', ("localhost", 30000))
-        after = self.cc.db.info()["doc_count"]
-        self.assertNotEqual(bef,after) 
+    def test_40_receive_function(self):
+        """test function reception: a serialized function string gets integrated."""
+        self.charun.datagramReceived(marshal.dumps(charun_tac.test_initial.func_code), ("localhost", 30000))
+        self.assertFalse(self.charun.log.err.called)
+        self.assertFalse(self.charun.couch_connect.store.called, "storage function has been erroneously called")
+        self.assertEqual(self.charun.func({}), charun_tac.test_initial({}))
 
 def suite():
     """make the test suite"""
