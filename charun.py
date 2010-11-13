@@ -21,7 +21,7 @@ class Charun(DatagramProtocol):
     def __init__(self, couchdb_url, db_name, func):
         self.func = func
         self.log = log
-        self.couch_connect = CouchDBConnect(couchdb_url, db_name, log)
+        self.couch_connect = CouchDBConnect(couchdb_url, db_name)
     def datagramReceived(self, data, (host, port)):
         """try to create an object from incoming json.
 

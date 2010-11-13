@@ -3,6 +3,7 @@ import sys
 import unittest2 as unittest
 import tests.integration_test_charun as i_t_charun
 import tests.unit_test_charun as u_t_charun
+import tests.unit_test_couchdb_connect as u_t_cc
 
 if __name__ == "__main__":
     uniT, integratioN = False, False
