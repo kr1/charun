@@ -1,6 +1,6 @@
 """This module creates a subclass of twisted.internet.protocol.DatagramProtocol
 
-whis is used as the main class of the reactor.
+which is used as the main class of the reactor.
 Public methods:
 datagramReceived -- try to create an object from json and check its well-formedness or try to extract a function in order to replace the current. 
 """

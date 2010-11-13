@@ -1,13 +1,19 @@
-import unittest
+"""integration tests for the charun class"""
+
+import unittest2 as unittest
 import marshal
 import time
+
 import json
+
 import client
+import charun_tac
 from charun import Charun
 from couchdb_connect import CouchDBConnect
-import charun_tac
+
+
 class integrationTestCharun(unittest.TestCase):
-    """a test class for the Charun module"""
+    """a integration-test class for the Charun module"""
     def setUp(self):
         """
         set up data used in the tests.
@@ -61,7 +67,4 @@ def suite():
 
 if __name__ == '__main__':
     unittest.TextTestRunner(verbosity=2).run(suite())
-
-
-
 

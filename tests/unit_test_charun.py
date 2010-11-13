@@ -3,17 +3,15 @@
 as the Charun class is a subclass of twisted.internet.protocol.DatagramProtocol
 only the <datagramReceived> method is tested
 """
-import unittest
+import unittest2 as unittest
 import marshal
-import time
-import json
 import client
 from mock import Mock
 from charun import Charun
 from couchdb_connect import CouchDBConnect
 import charun_tac
 
-class testCharun(unittest.TestCase):
+class UnitTestCharun(unittest.TestCase):
     """a test class for the Charun module"""
     def setUp(self):
         """
@@ -57,7 +55,7 @@ class testCharun(unittest.TestCase):
 def suite():
     """make the test suite"""
     suite = unittest.TestSuite()
-    suite.addTest(unittest.makeSuite(testCharun))
+    suite.addTest(unittest.makeSuite(UnitTestCharun))
     return suite
 
 
