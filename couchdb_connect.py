@@ -6,7 +6,13 @@ from twisted.python import log
 class CouchDBConnect():
     def __init__(self, url="http://localhost:5984" , db_name="charun"):
         self.couch = couchdb.Server(url)
-        if db_name not in self.couch.resource.get_json("_all_dbs")[2]: 
+        self.log = log
+        try:
+            all_dbs = self.couch.resource.get_json("_all_dbs")[2]
+        except IOError as (errno, strerror):
+            self.log.err("no CouchDB instance is listening on %s, shutting down...." % (url,))
+            raise IOError
+        if db_name not in all_dbs: 
             self.db = self.couch.create(db_name)
         else:
             self.db = self.couch[db_name]
