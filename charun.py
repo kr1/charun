@@ -18,10 +18,10 @@ from twisted.python import log
 from couchdb_connect import CouchDBConnect
 
 class Charun(DatagramProtocol):
-    def __init__(self, couch_connect, func):
+    def __init__(self, couchdb_url, db_name, func):
         self.func = func
         self.log = log
-        self.couch_connect = couch_connect
+        self.couch_connect = CouchDBConnect(couchdb_url, db_name, log)
     def datagramReceived(self, data, (host, port)):
         """try to create an object from incoming json.
 

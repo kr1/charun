@@ -26,7 +26,7 @@ test_db_name = "test_charun"
 # create the application service
 application = service.Application("charun couchdb bridge")
 #define the UDP server on the specified port and hand the handler-class in
-udp_service = internet.UDPServer(port, Charun(CouchDBConnect(couchdb_url, db_name),initial))
+udp_service = internet.UDPServer(port, Charun(couchdb_url, db_name, initial))
 # this hooks the udp-service to the application
 udp_service.setServiceParent(application)
 # when started with twistd it will start the child services.

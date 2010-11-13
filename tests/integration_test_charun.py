@@ -14,8 +14,8 @@ class integrationTestCharun(unittest.TestCase):
 
         this method is called before each test function execution.
         """
-        self.cc = CouchDBConnect(charun_tac.couchdb_url, charun_tac.test_db_name)
-        self.charun = Charun(self.cc, charun_tac.initial)
+        self.charun = Charun(charun_tac.couchdb_url, charun_tac.test_db_name, charun_tac.initial)
+        self.cc = self.charun.couch_connect
 
     def test_20_receive_data(self):
         """test data reception: json-dict-object gets written, other json strings not"""

@@ -21,10 +21,10 @@ class testCharun(unittest.TestCase):
 
         this method is called before each test function execution.
         """
-        cc = Mock()
         charun_tac.initial = Mock()
         charun_tac.initial.return_value == "transformed obj"
-        self.charun = Charun(cc, charun_tac.initial)
+        self.charun = Charun(charun_tac.couchdb_url, charun_tac.db_name, charun_tac.initial)
+        self.charun.couch_connect = Mock()
         self.charun.log = Mock()
 
     def test_10_receive_data(self):
