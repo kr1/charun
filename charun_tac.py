@@ -23,21 +23,23 @@ db_name = "charun"
 # Test DB
 test_db_name = "test_charun"
 
-# create the application service
-application = service.Application("charun couchdb bridge")
-#define the UDP server on the specified port and hand the handler-class in
-udp_service = internet.UDPServer(port, Charun(couchdb_url, db_name, initial))
-# this hooks the udp-service to the application
-udp_service.setServiceParent(application)
-# when started with twistd it will start the child services.
-
 #LOGGING
 logfile = DailyLogFile("charun.log", "tmp")
 logname = "charun" 
 logging.basicConfig(stream=logfile, format="[%(asctime)s]:charun: %(levelname)s:%(message)s", datefmt="%Y-%m-%d %H:%M:%S")
 logger = logging.getLogger(logname)
 logger.setLevel(loglevel) 
+
+# create the application service
+application = service.Application("charun couchdb bridge")
 application.setComponent(ILogObserver, log.PythonLoggingObserver(logname).emit)
+
+#define the UDP server on the specified port and hand the handler-class in
+udp_service = internet.UDPServer(port, Charun(couchdb_url, db_name, initial))
+
+# this hooks the udp-service to the application
+udp_service.setServiceParent(application)
+# when started with twistd it will start the child services.
 
 def test_initial(x):
     """this function serves testing purposes"""
