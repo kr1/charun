@@ -26,15 +26,11 @@ class integrationTestCharun(unittest.TestCase):
     def test_20_receive_data(self):
         """test data reception: json-dict-object gets written, other json strings not"""
         # this data has to be written to the db
-        bef = self.cc.db.info()["doc_count"]
-        self.charun.datagramReceived('{"122":"erre"}', ("localhost", 30000))
-        after = self.cc.db.info()["doc_count"]
-        self.assertNotEqual(bef, after) 
+        count_diff = self.call_and_compare_count(self.charun.datagramReceived,['{"122":"erre"}', ("localhost", 30000)])
+        self.assertNotEqual(*count_diff) 
         # this data must not be written to the db (not castable to dict-type)
-        bef = self.cc.db.info()["doc_count"]
-        self.charun.datagramReceived('122', ("localhost", 30000))
-        after = self.cc.db.info()["doc_count"]
-        self.assertEqual(bef, after) 
+        count_diff = self.call_and_compare_count(self.charun.datagramReceived,['122', ("localhost", 30000)])
+        self.assertEqual(*count_diff) 
 
     def test_30_receive_function(self):
         """test function reception: a serialized function string gets integrated and applied.
@@ -42,10 +38,8 @@ class integrationTestCharun(unittest.TestCase):
         nothing is written to the DB and
         finally a modified functionality is observed.
         """
-        bef = self.cc.db.info()["doc_count"]
-        self.charun.datagramReceived(marshal.dumps(charun_tac.test_initial.func_code), ("localhost", 30000))
-        after = self.cc.db.info()["doc_count"]
-        self.assertEqual(bef,after) 
+        count_diff = self.call_and_compare_count(self.charun.datagramReceived,[marshal.dumps(charun_tac.test_initial.func_code), ("localhost", 30000)])
+        self.assertEqual(*count_diff) 
         #time.sleep(1)
         id, ref = self.charun.datagramReceived('{"122":"erre"}', ("localhost", 30000))
         doc = self.cc.db.get(id)
@@ -53,10 +47,14 @@ class integrationTestCharun(unittest.TestCase):
 
     def test_10_write_data_to_the_db(self):
         """test successful writing to the db by comparing the doc-count before and after"""
+        count_diff = self.call_and_compare_count(self.charun.datagramReceived,['{"122":"erre"}', ("localhost", 30000)])
+        self.assertNotEqual(*count_diff) 
+
+    def call_and_compare_count(self, callable, *args):
         bef = self.cc.db.info()["doc_count"]
-        self.charun.datagramReceived('{"122":"erre"}', ("localhost", 30000))
+        apply(callable,*args)
         after = self.cc.db.info()["doc_count"]
-        self.assertNotEqual(bef,after) 
+        return bef,after
 
 def suite():
     """make the test suite"""
