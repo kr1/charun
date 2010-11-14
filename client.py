@@ -2,8 +2,10 @@
 
 manually to the server defined in the module charun"""
 from socket import *
+
 import json
 import marshal
+
 import charun_tac
 
 def test_function(_dict):

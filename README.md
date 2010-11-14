@@ -31,8 +31,8 @@ INSTALL INSTRUCTIONS
 1.  **dependencies**
 
     you need to have python and the [twisted](http://twistedmatrix.com/trac/wiki/Documentation) framework installed. 
-    furthermore, you need a [couchdb](http://couchdb.apache.org/) instance to write to. 
-    And if you want to run the tests you need the [Mock module](http://python-mock.sourceforge.net/). 
+    furthermore, you need a [couchdb](http://couchdb.apache.org/) instance to write to.   
+    And if you want to run the tests you need the [Mock module](http://python-mock.sourceforge.net/) and the [unittest2 module](http://pypi.python.org/pypi/unittest2/). 
 
 2.  **Run**
 

@@ -1,10 +1,19 @@
+"""this is the twisted application configuration (tac)-file.
+
+it holds the basic configuration for the charun app.
+please specify urls and ports for the twisted UDP server and the CouchDB instance
+you can also set the function that will be applied to incoming messages on the UDP server.
+"""
+
 import logging
+
 from twisted.application import internet, service
 from twisted.internet.protocol import ServerFactory, Protocol
 from twisted.python import log
 from twisted.python.log import ILogObserver, FileLogObserver
 from twisted.python.logfile import DailyLogFile
 from couchdb_connect import CouchDBConnect
+
 from charun import Charun
 
 ## configuration parameters
@@ -39,7 +48,7 @@ udp_service = internet.UDPServer(port, Charun(couchdb_url, db_name, initial))
 
 # this hooks the udp-service to the application
 udp_service.setServiceParent(application)
-# when started with twistd it will start the child services.
+# when started with twistd, the child services will be started automatically.
 
 def test_initial(x):
     """this function serves testing purposes"""

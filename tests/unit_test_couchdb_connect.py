@@ -1,13 +1,15 @@
 """unit tests for the CouchDBConnect class"""
 
-import unittest2 as unittest
 import socket
 import marshal
-import client
+
 import couchdb
+import unittest2 as unittest
 from mock import Mock
-from couchdb_connect import CouchDBConnect
+
+import client
 import charun_tac
+from couchdb_connect import CouchDBConnect
 
 class testCouchDBConnect(unittest.TestCase):
     """a unit-test class for the CouchDBConnect class"""
@@ -46,7 +48,6 @@ class testCouchDBConnect(unittest.TestCase):
         self.assertFalse(cc.db.save.called)
         self.assertFalse(cc.log.msg.called)
         self.assertTrue(cc.log.err.called)
-
 
 
 def suite():
