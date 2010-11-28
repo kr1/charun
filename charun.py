@@ -54,12 +54,12 @@ class Charun(DatagramProtocol):
         return res    
 
 if __name__ == "__main__":
-    print "Warning:\n This module should be run as a twisted application.\nrun with:\ntwistd -y charun_tac.py\n"
+    print "Warning:\nThis module should be run as a twisted application.\nrun with:\ntwistd -y charun_tac.py\n"
     time.sleep(1)
     print "tring to initialize a connection to CouchDB with default url "
     cc = CouchDBConnect("http://localhost:5984","charun")
     print "starting twisted reactor listening for udp-datagrams on localhost:9999"
-    reactor.listenUDP(9999, Charun(cc, lambda x: x))
+    reactor.listenUDP(9999, Charun("http://localhost:5984" , "charun", lambda x: x))
     reactor.run()
 
 
