@@ -11,10 +11,12 @@ import types
 import logging
 import couchdb
 import json
+
 from twisted.application import internet, service
 from twisted.internet.protocol import  DatagramProtocol
 from twisted.internet import reactor
 from twisted.python import log
+
 from couchdb_connect import CouchDBConnect
 
 class Charun(DatagramProtocol):
@@ -22,6 +24,7 @@ class Charun(DatagramProtocol):
         self.func = func
         self.log = log
         self.couch_connect = CouchDBConnect(couchdb_url, db_name)
+
     def datagramReceived(self, data, (host, port)):
         """try to create an object from incoming json.
 
@@ -51,7 +54,11 @@ class Charun(DatagramProtocol):
         return res    
 
 if __name__ == "__main__":
+    print "Warning:\n This module should be run as a twisted application.\nrun with:\ntwistd -y charun_tac.py\n"
+    time.sleep(1)
+    print "tring to initialize a connection to CouchDB with default url "
     cc = CouchDBConnect("http://localhost:5984","charun")
+    print "starting twisted reactor listening for udp-datagrams on localhost:9999"
     reactor.listenUDP(9999, Charun(cc, lambda x: x))
     reactor.run()
 

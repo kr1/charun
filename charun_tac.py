@@ -12,8 +12,8 @@ from twisted.internet.protocol import ServerFactory, Protocol
 from twisted.python import log
 from twisted.python.log import ILogObserver, FileLogObserver
 from twisted.python.logfile import DailyLogFile
-from couchdb_connect import CouchDBConnect
 
+from couchdb_connect import CouchDBConnect
 from charun import Charun
 
 ## configuration parameters
@@ -29,10 +29,10 @@ initial = lambda x: x
 ## CouchDB configuration
 couchdb_url = "http://localhost:5984"
 db_name = "charun"
-# Test DB
+## Test DB
 test_db_name = "test_charun"
 
-#LOGGING
+## LOGGING
 logfile = DailyLogFile("charun.log", "tmp")
 logname = "charun" 
 logging.basicConfig(stream=logfile, format="[%(asctime)s]:charun: %(levelname)s:%(message)s", datefmt="%Y-%m-%d %H:%M:%S")

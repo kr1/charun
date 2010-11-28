@@ -18,7 +18,7 @@ The basic modules are:
 
 2.  **CouchDBConnect**
 
-    couchdb related code for connection ad storage
+    couchdb related code for connection and storage
 
 3.  **charun_tac.py**
 

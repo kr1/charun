@@ -16,7 +16,14 @@ class CouchDBConnect():
             self.db = self.couch.create(db_name)
         else:
             self.db = self.couch[db_name]
+
     def store(self, _dict, origin):
+        """saves the incoming dict in couchdb
+        
+        checks if incoming value is a dict.
+        returns the id and the ref fo the created document as in 
+        res = (id,ref)
+        """
         res = None
         if type(_dict).__name__ == "dict":
             self.log.msg("%s - data:%r" % (origin[0], _dict))
