@@ -32,6 +32,9 @@ class integrationTestCharun(unittest.TestCase):
         count_diff = self.call_and_compare_count(self.charun.datagramReceived,
                                                  ['122', ("localhost", 30000)])
         self.assertEqual(*count_diff)
+        count_diff = self.call_and_compare_count(self.charun.datagramReceived,
+                                                 ['[122, 123, 124]', ("localhost", 30000)])
+        self.assertEqual(*count_diff)
 
     def test_30_receive_function(self):
         """test function reception: a serialized function string gets
