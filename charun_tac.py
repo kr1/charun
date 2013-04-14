@@ -9,12 +9,10 @@ messages on the UDP server.
 import logging
 
 from twisted.application import internet, service
-from twisted.internet.protocol import ServerFactory, Protocol
 from twisted.python import log
-from twisted.python.log import ILogObserver, FileLogObserver
+from twisted.python.log import ILogObserver
 from twisted.python.logfile import DailyLogFile
 
-from couchdb_connect import CouchDBConnect
 from charun import Charun
 
 

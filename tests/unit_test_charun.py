@@ -5,10 +5,8 @@ only the <datagramReceived> method is tested
 """
 import unittest2 as unittest
 import marshal
-import client
 from mock import Mock
 from charun import Charun
-from couchdb_connect import CouchDBConnect
 import charun_tac
 
 

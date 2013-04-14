@@ -10,10 +10,8 @@ import marshal
 import time
 import types
 import logging
-import couchdb
 import json
 
-from twisted.application import internet, service
 from twisted.internet.protocol import  DatagramProtocol
 from twisted.internet import reactor
 from twisted.python import log

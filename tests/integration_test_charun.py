@@ -2,14 +2,9 @@
 
 import unittest2 as unittest
 import marshal
-import time
 
-import json
-
-import client
 import charun_tac
 from charun import Charun
-from couchdb_connect import CouchDBConnect
 
 
 class integrationTestCharun(unittest.TestCase):
@@ -25,8 +20,9 @@ class integrationTestCharun(unittest.TestCase):
         self.cc = self.charun.couch_connect
 
     def test_20_receive_data(self):
-        """test data reception: json-dict-object gets written, other json
-        strings not"""
+        """test data reception: json-dict-object gets written
+
+        other json strings not."""
         # this data has to be written to the db
         count_diff = self.call_and_compare_count(self.charun.datagramReceived,
                                                  ['{"122": "erre"}',
