@@ -25,8 +25,8 @@ The basic modules are:
     application configuration (twisted.application) that holds all connection informations, database names.
 
 
-INSTALL INSTRUCTIONS
--------------------
+INSTALLATION
+------------
 
 1.  **dependencies**
 
@@ -34,7 +34,7 @@ INSTALL INSTRUCTIONS
     furthermore, you need a [couchdb](http://couchdb.apache.org/) instance to write to.   
     And if you want to run the tests you need the [Mock module](http://python-mock.sourceforge.net/) and the [unittest2 module](http://pypi.python.org/pypi/unittest2/). 
 
-2.  **Run**
+2.  **How to run**
 
     run charun as a daemon with:  
     <code>twistd -y charun_tac.py</code>
@@ -45,4 +45,17 @@ INSTALL INSTRUCTIONS
 
     you can run the application in foreground with:  
     <code>twistd -noy charun_tac.py</code>
+
+3.  **run the tests**
+
+    nosetests will discover the tests automatically, just run:  
+    `nosetests -v`
+
+    if you want more control over which tests to run:  
+    you can run all tests by calling:  
+    `python test_director.py`  
+    you can run only unit tests:  
+    `python test_director.py unit`  
+    or only integration tests:  
+    `python test_director.py integration`  
 
